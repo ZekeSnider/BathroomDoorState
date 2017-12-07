@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "BathroomDoorState",
+  "description": "Bathroom Door State API server",
+  "license": "MIT",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZekeSnider/BathroomDoorState.git"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  }
+}
