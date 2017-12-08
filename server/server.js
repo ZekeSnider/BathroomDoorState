@@ -24,6 +24,7 @@ app.get('/state', function (req, res) {
 });
 
 app.ws('/state', function(ws, req) {
+    ws.send(fs.readFileSync(stateFileName, "utf8"));
     ws.on('message', function(msg) {
         if (msg === "ping") {
             ws.send("pong");
@@ -68,5 +69,7 @@ app.post('/state', function (req, res) {
     }
     
 });
+
+app.use(express.static('static'))
 
 app.listen(port, () => console.log('Listening on port ' + port + '!'))
