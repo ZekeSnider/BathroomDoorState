@@ -16,7 +16,7 @@ class DoorState(enum):
     available = 1
     occupied = 2
 
-lastState = DoorState.available
+lastState = None
 
 with open('config.json') as json_data_file:
     configData = json.loads(json_data_file)
