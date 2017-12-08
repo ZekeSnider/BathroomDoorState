@@ -42,9 +42,9 @@ while continue_reading:
     (status,TagType) = MIFAREReader.MFRC522_Request(MIFAREReader.PICC_REQIDL)
 
     if status == MIFAREReader.MI_OK:
-        currentState = DoorState.available
-    else:
         currentState = DoorState.occupied
+    else:
+        currentState = DoorState.available
 
     if (lastState != currentState):
         update_server_state(currentState)
