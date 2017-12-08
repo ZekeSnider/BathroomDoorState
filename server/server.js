@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 var fs = require('fs');
 const port = 8000;
 const stateFileName = "state.json";
-const keyFileName = "key.config";
+const keyFileName = "keyconfig.json";
 const app = express();
 app.use(bodyParser.json());
 var expressWs = require('express-ws')(app);
@@ -23,7 +23,13 @@ app.get('/state', function (req, res) {
     res.send(content);
 });
 
-app.ws('/state', function(ws, req) {});
+app.ws('/state', function(ws, req) {
+    ws.on('message', function(msg) {
+        if (msg === "ping") {
+            ws.send("pong");
+        }
+    });
+});
 
 app.post('/state', function (req, res) {
     try {

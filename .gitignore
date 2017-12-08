@@ -56,5 +56,7 @@ typings/
 
 # dotenv environment variables file
 .env
+.DS_store
 
-server/key.config
+server/keyconfig.json
+client/config.json
