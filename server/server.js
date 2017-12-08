@@ -6,12 +6,24 @@ const stateFileName = "state.json";
 const keyFileName = "key.config";
 const app = express();
 app.use(bodyParser.json());
+var expressWs = require('express-ws')(app);
+
+function BroadcastState() {
+    var stateContent = fs.readFileSync(stateFileName, "utf8");
+    expressWs.getWss().clients.forEach(function each(client) {
+        if (client.readyState === 1) {
+            client.send(stateContent);
+        }
+    });
+}
 
 app.get('/state', function (req, res) {
     var content = fs.readFileSync(stateFileName);
     res.setHeader('Content-Type', 'application/json');
     res.send(content);
 });
+
+app.ws('/state', function(ws, req) {});
 
 app.post('/state', function (req, res) {
     try {
@@ -33,6 +45,8 @@ app.post('/state', function (req, res) {
     }
     if (req.body.state === "occupied" || req.body.state === "available") {
         fs.writeFileSync(stateFileName, JSON.stringify({state: req.body.state}));
+
+        BroadcastState();
         var responseObj = {
             "status": "success",
             "message": "Bathroom door state succesfully updated."
