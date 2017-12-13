@@ -4,6 +4,7 @@
 
 import RPi.GPIO as GPIO
 import MFRC522
+from enum import Enum
 import signal
 import requests
 import json
@@ -12,14 +13,14 @@ import time
 SLEEP_TIME = 500
 continue_reading = True
 
-class DoorState(enum):
+class DoorState(Enum):
     available = 1
     occupied = 2
 
 lastState = None
 
 with open('config.json') as json_data_file:
-    configData = json.loads(json_data_file)
+    configData = json.load(json_data_file)
 
 # Capture SIGINT for cleanup when the script is aborted
 def end_read(signal,frame):
@@ -29,7 +30,10 @@ def end_read(signal,frame):
 
 def update_server_state(state):
     payload = {'state': state.name, 'key': configData['key']}
-    requests.post(data['apiEndpoint'], data=json.dumps(payload))
+    try:
+        requests.post(configData['apiEndpoint'], data=json.dumps(payload))
+    except: 
+        pass
 
 # Hook the SIGINT
 signal.signal(signal.SIGINT, end_read)
